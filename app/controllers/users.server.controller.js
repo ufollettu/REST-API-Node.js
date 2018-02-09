@@ -1,6 +1,7 @@
 var User = require("mongoose").model("User");
 var passport = require("passport");
 
+
 //user messages handles
 var getErrorMessage = function (err) {
     var message = '';
@@ -34,41 +35,51 @@ exports.renderSignin = function (req, res, next) {
     }
 };
 
-//signup view render
+//signup view render, show registration form
 exports.renderSignup = function (req, res, next) {
     if (!req.user) {
-        res.render('signup', {
-            title: 'Sign-up Form',
+        res.render('register', {
+            title: 'Register Form',
             messages: req.flash('error')
         });
     } else {
         return res.redirect('/');
     }
 };
-
+// //handle sign up logic
 exports.signup = function (req, res, next) {
+
     if (!req.user) {
-        var user = new User(req.body);
         var message = null;
-
-        user.provider = 'local';
-
-        user.save(function (err) {
+        User.register(new User({username: req.body.username}), req.body.password, function (err, user) {
             if (err) {
                 var message = getErrorMessage(err);
-
-                req.flash('error', message);
-                return res.redirect('/signup');
+                req.flash("error", message);
+                return res.render("register", {error: message}); //different from the lecture when return res.render
             }
-            req.login(user, function (err) {
-                if (err) return next(err);
-                return res.redirect('/');
+            passport.authenticate("local")(req, res, function () {
+                req.flash("success", "Welcome" + user.username);
+                res.redirect("/");
             });
         });
     } else {
         return res.redirect('/');
     }
 };
+////////////////////////
+// router.post("/register", function (req, res) {
+//     User.register(new User({username:req.body.username}), req.body.password, function (err, user){
+//         if (err) {
+//             req.flash("error", err.message);
+//             return res.render("register", {error: err.message}); //different from the lecture when return res.render
+//         }
+//         passport.authenticate("local")(req, res, function () {
+//             req.flash("success", "Welcome" + user.username);
+//             res.redirect("/campgrounds");
+//         });
+//     });
+// });
+////////////////////////
 // signout redirect to index
 exports.signout = function (req, res) {
     req.logout();
