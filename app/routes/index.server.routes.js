@@ -1,3 +1,11 @@
+//////////////////////////////
+
+// module.exports = function (app) {
+//     var index = require("../controllers/index.server.controller");
+//     app.get('/', index.render);
+// };
+
+//////////////////////////////
 var express = require("express");
 var router = express.Router();
 var passport = require("passport");

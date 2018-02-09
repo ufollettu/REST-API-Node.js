@@ -9,8 +9,20 @@ var UserSchema = new Schema({
         type: String,
         match: [/.+\@.+\..+/, "Please fill a valid email address"]
     },
-    username: String,
-    password: String,
+    username: {
+        type: String,
+        trim: true,
+        unique: true,
+        required: 'Username is required'
+    },
+    password: {
+        type: String,
+        validate: [
+            function (password) {
+                return password && password.length > 6;
+            }, 'Password should be longer'
+        ]
+    },
     provider: {
         type: String,
         required: 'Provider is required'
