@@ -1,6 +1,6 @@
 module.exports = {
     //Development configuration options
-    db: "mongodb://localhost/mean-book",
+    db: "mongodb://localhost/rest-api-node",
     sessionSecret: "developmentSessionSecret",
     facebook: { //OAuth FB App Data
         clientID: '135099493853031',

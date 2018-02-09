@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 var passportLocalMongoose = require("passport-local-mongoose");
 var Schema = mongoose.Schema;
 
-var UserSchema = new Schema({
+var userSchema = new Schema({
     firstName: String,
     lastName: String,
     email: {
@@ -33,17 +33,19 @@ var UserSchema = new Schema({
         type: Date,
         default: Date.now
     }
-},{ usePushEach: true });
+}, {usePushEach: true});
 
-UserSchema.virtual('fullName').get(function () {
-    return this.firstName + ' ' + this.lastName;
-}).set(function (fullName) {
-    var splitName = fullName.split(' ');
-    this.firstName = splitName[0] || '';
-    this.lastName = splitName[1] || '';
-});
+userSchema.virtual('fullName')
+    .get(function () {
+        return this.firstName + ' ' + this.lastName;
+    })
+    .set(function (fullName) {
+        var splitName = fullName.split(' ');
+        this.firstName = splitName[0] || '';
+        this.lastName = splitName[1] || '';
+    });
 
-UserSchema.statics.findUniqueUsername = function (username, suffix, callback) {
+userSchema.statics.findUniqueUsername = function (username, suffix, callback) {
     var _this = this;
     var possibleUsername = username + (suffix || '');
 
@@ -62,11 +64,11 @@ UserSchema.statics.findUniqueUsername = function (username, suffix, callback) {
     });
 };
 
-UserSchema.set('toJSON', {
+userSchema.set('toJSON', {
     getters: true,
     virtuals: true
 });
 
-UserSchema.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("User", userSchema);

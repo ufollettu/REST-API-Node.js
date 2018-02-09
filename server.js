@@ -9,8 +9,9 @@ var db = mongoose();
 var app = express();
 var passport = passport();
 
-app.listen(3000);
+var PORT = process.env.PORT || 3000;
+app.listen(PORT, function() {
+    console.log("RestApiNode at " + PORT);
+});
 
 module.exports = app;
-
-console.log('running on 3000');
