@@ -26,7 +26,7 @@ var getErrorMessage = function (err) {
 //signin view render
 exports.renderSignin = function (req, res, next) {
     if (!req.user) {
-        res.render('signin', {
+        res.render('login', {
             title: 'Sign.in Form',
             messages: req.flash('error') || req.flash('info')
         });
@@ -46,9 +46,9 @@ exports.renderSignup = function (req, res, next) {
         return res.redirect('/');
     }
 };
-// //handle sign up logic
-exports.signup = function (req, res, next) {
 
+//handle sign up logic
+exports.signup = function (req, res, next) {
     if (!req.user) {
         var message = null;
         User.register(new User({username: req.body.username}), req.body.password, function (err, user) {
@@ -66,23 +66,11 @@ exports.signup = function (req, res, next) {
         return res.redirect('/');
     }
 };
-////////////////////////
-// router.post("/register", function (req, res) {
-//     User.register(new User({username:req.body.username}), req.body.password, function (err, user){
-//         if (err) {
-//             req.flash("error", err.message);
-//             return res.render("register", {error: err.message}); //different from the lecture when return res.render
-//         }
-//         passport.authenticate("local")(req, res, function () {
-//             req.flash("success", "Welcome" + user.username);
-//             res.redirect("/campgrounds");
-//         });
-//     });
-// });
-////////////////////////
+
 // signout redirect to index
 exports.signout = function (req, res) {
     req.logout();
+    req.flash("success", "Logged You Out!");
     res.redirect('/');
 };
 

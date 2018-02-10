@@ -44,7 +44,7 @@ module.exports = function (app) {
 //     successRedirect: "/campgrounds/",
 //     failureRedirect: "/login"
 // }), function (req, res) {});
-//
+
 // //logout route
 // router.get("/logout", function (req, res) {
 //     req.logout();
