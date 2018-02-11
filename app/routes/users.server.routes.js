@@ -1,53 +1,22 @@
-var users = require("../../app/controllers/users.server.controller");
+var express = require("express");
+var router = express.Router();
 var passport = require("passport");
+var users = require("../../app/controllers/users.server.controller");
 
-module.exports = function (app) {
-    //local Auth route
-    app.route("/signup")
-        .get(users.renderSignup)
-        .post(users.signup);
-    app.route("/signin")
-        .get(users.renderSignin)
-        .post(passport.authenticate('local', {
-            successRedirect: '/',
-            failureRedirect: '/login',
-            failureFlash: true
-        }));
-    app.get('/signout', users.signout);
+//show signup form
+router.route("/register")
+    .get(users.renderRegister)
+    .post(users.register);
 
-    //facebook AOuth route
-    app.get('/oauth/facebook', passport.authenticate('facebook', {
-        failureRedirect: '/signin'
-    }));
-    app.get('/oauth/facebook/callback', passport.authenticate('facebook', {
-        failureRedirect: '/signin',
-        successRedirect: '/'
-    }));
+//render login form
+router.route("/login")
+    .get(users.renderLogin)
+    .post(passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+    }), function(req, res) {});
 
-    //twitter AOuth route
-    app.get('/oauth/twitter', passport.authenticate('twitter', {
-        failureRedirect: '/signin'
-    }));
-    app.get('/oauth/twitter/callback', passport.authenticate('twitter', {
-        failureRedirect: '/signin',
-        successRedirect: '/'
-    }));
+// logout
+router.get("/logout", users.logout);
 
-    //google AOuth route
-    app.get('/oauth/google', passport.authenticate('google', {
-        failureRedirect: '/signin',
-        scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'],
-    }));
-    app.get('/oauth/google/callback', passport.authenticate('google', {
-        failureRedirect: '/signin',
-        successRedirect: '/'
-    }));
-    //github AOuth route
-    app.get('/oauth/github', passport.authenticate('github', {
-        failureRedirect: '/signin',
-    }));
-    app.get('/oauth/github/callback', passport.authenticate('github', {
-        failureRedirect: '/signin',
-        successRedirect: '/'
-    }));
-};
+module.exports = router;

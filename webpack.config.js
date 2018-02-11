@@ -9,6 +9,14 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
     },
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"]
+            }
+        ]
+    },
     plugins: [
         new webpack.optimize.UglifyJsPlugin({
             compress: {
@@ -20,7 +28,10 @@ module.exports = {
             sourceMap: true
         }),
         new webpack.DefinePlugin({
-            'process.env': { NODE_ENV: JSON.stringify(nodeEnv) }
+            'process.env': {NODE_ENV: JSON.stringify(nodeEnv)}
+            // jQuery: 'jquery',
+            // $: 'jquery',
+            // jquery: 'jquery'
         })
     ]
 };
