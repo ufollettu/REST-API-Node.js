@@ -1,8 +1,9 @@
-var config = require("../config/config");
-var path = require("path"),
+var config = require("../config/config"),
+    path = require("path"),
     express = require("express"),
     favicon = require("serve-favicon"),
     logger = require("morgan"),
+    compress = require("compression"),
     cookieParser = require("cookie-parser"),
     bodyParser = require("body-parser"),
     session = require("express-session"),
@@ -10,11 +11,13 @@ var path = require("path"),
     passport = require("passport"),
     middleware = require("./middleware/index.server.middleware");
 
-// Requiring Routes
-var indexRoutes = require("./routes/index.server.routes");
-var usersRoutes = require("./routes/users.server.routes");
-
 var app = express();
+
+if (process.env.NODE_ENV === "development") {
+    app.use(logger("dev"));
+} else if (process.env.NODE_ENV === "production") {
+    app.use(compress());
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,18 +25,16 @@ app.set("view engine", "ejs");
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, './../public', 'favicon.ico')));
-app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, './../public')));
-
 app.use(session({
     saveUninitialized: true,
     resave: true,
     secret: config.sessionSecret
 }));
-
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -46,22 +47,25 @@ app.use(function (req, res, next) {
     next();
 });
 
+// Requiring Routes
+var indexRoutes = require("./routes/index.server.routes");
+var usersRoutes = require("./routes/users.server.routes");
+
 app.use("/", indexRoutes);
 app.use("/", usersRoutes);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
     // render the error page
     res.status(err.status || 500);
     res.render('error');
