@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="PROJECT" libraries="{dom-inputevent-DefinitelyTyped, express-DefinitelyTyped, express-session-DefinitelyTyped, mongoose-DefinitelyTyped, node-DefinitelyTyped, passport-DefinitelyTyped, passport-local-DefinitelyTyped, passport-local-mongoose-DefinitelyTyped}" />
+    <includedPredefinedLibrary name="Node.js Core" />
+  </component>
+</project>
