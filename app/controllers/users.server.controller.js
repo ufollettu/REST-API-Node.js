@@ -11,9 +11,11 @@ exports.register = function (req, res) {
     User.register(new User({username:req.body.username}), req.body.password, function (err, user) {
         if(err) {
             console.log(err);
-            return res.render("register");
+            // req.flash("error", err.message);
+            return res.render("register", {error: err.message}); //different from the lecture when return res.render
         } else {
             passport.authenticate("local")(req, res, function () {
+                // req.flash("success", "Welcome" + user.username);
                 res.redirect("/");
             })
         }
@@ -26,5 +28,6 @@ exports.renderLogin = function (req, res) {
 // signout redirect to index
 exports.logout = function (req, res) {
     req.logout();
+    // req.flash("success", "Logged You Out!");
     res.redirect("/");
 };

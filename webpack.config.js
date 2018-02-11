@@ -4,18 +4,10 @@ const path = require('path');
 
 module.exports = {
     devtool: 'source-map',
-    entry: './server.js',
+    entry: './bin/www.js',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
-    },
-    module: {
-        rules: [
-            {
-                test: /\.css$/,
-                use: ["style-loader", "css-loader"]
-            }
-        ]
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin({

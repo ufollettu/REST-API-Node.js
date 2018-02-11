@@ -12,7 +12,7 @@ var path = require("path"),
     middleware = require("./middleware/index.server.middleware");
 
 //mongoose config
-mongoose.connect("mongodb://localhost/auth_demo_app");
+mongoose.connect("mongodb://localhost/rest-api-node");
 mongoose.Promise = global.Promise;
 
 // Requiring Routes

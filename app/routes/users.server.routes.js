@@ -8,10 +8,7 @@ router.get("/register", users.renderRegister);
 router.post("/register", users.register);
 
 //render login form
-// router.get("/login", users.renderLogin);
-router.get("/login", function (req, res) {
-    res.render("login");
-});
+router.get("/login", users.renderLogin);
 router.post("/login", passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login'
