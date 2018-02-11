@@ -1,19 +1,14 @@
+var config = require("../config/config");
 var path = require("path"),
     express = require("express"),
-    mongoose = require("mongoose"),
     favicon = require("serve-favicon"),
     logger = require("morgan"),
     cookieParser = require("cookie-parser"),
     bodyParser = require("body-parser"),
-    User = require("./models/user.server.model"),
+    session = require("express-session"),
+    flash = require("connect-flash"),
     passport = require("passport"),
-    LocalStrategy = require("passport-local"),
-    passportLocalMongoose = require("passport-local-mongoose"),
     middleware = require("./middleware/index.server.middleware");
-
-//mongoose config
-mongoose.connect("mongodb://localhost/rest-api-node");
-mongoose.Promise = global.Promise;
 
 // Requiring Routes
 var indexRoutes = require("./routes/index.server.routes");
@@ -33,19 +28,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, './../public')));
 
-app.use(require("express-session")({
-    secret: "we don't need another hero",
-    resave: false,
-    saveUninitialized: false
+app.use(session({
+    saveUninitialized: true,
+    resave: true,
+    secret: config.sessionSecret
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-//passport config
-passport.use(new LocalStrategy(User.authenticate())); //from passport-local-mongoose plugin
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
 
 app.use(function (req, res, next) {
     // pass if user is authenticated to ALL routes

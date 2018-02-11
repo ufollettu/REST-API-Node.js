@@ -1,9 +1,18 @@
 #!/usr/bin/env node
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Module dependencies.
+var mongoose = require("../config/mongoose");
+var passport = require("../config/passport");
+
 var app = require('../app/app');
 var debug = require('debug')('untitled1:server');
 var http = require('http');
+
+// SETTINGS
+var db = mongoose();
+
+var passport = passport();
 
 // Get port from environment and store in Express.
 var port = normalizePort(process.env.PORT || '3000');
