@@ -1,4 +1,4 @@
-var User = require("../../app/models/user.server.model");
+var User = require("../models/user.server.model");
 var passport = require("passport");
 
 //signup view render
@@ -14,7 +14,7 @@ exports.register = function (req, res) {
             return res.render("register");
         } else {
             passport.authenticate("local")(req, res, function () {
-                res.redirect("/secret");
+                res.redirect("/");
             })
         }
     })

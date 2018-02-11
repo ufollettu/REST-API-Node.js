@@ -1,6 +1,6 @@
 exports.render = function (req, res) {
     res.render("index", {
-        title : "Ciaone",
+        title : "Express",
         user: JSON.stringify(req.user)
     });
 };

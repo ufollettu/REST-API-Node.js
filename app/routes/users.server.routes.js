@@ -1,17 +1,18 @@
 var express = require("express");
 var router = express.Router();
 var passport = require("passport");
-var users = require("../../app/controllers/users.server.controller");
+var users = require("../controllers/users.server.controller");
 
 //show signup form
-router.route("/register")
-    .get(users.renderRegister)
-    .post(users.register);
+router.get("/register", users.renderRegister);
+router.post("/register", users.register);
 
 //render login form
-router.route("/login")
-    .get(users.renderLogin)
-    .post(passport.authenticate('local', {
+// router.get("/login", users.renderLogin);
+router.get("/login", function (req, res) {
+    res.render("login");
+});
+router.post("/login", passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login'
     }), function(req, res) {});
