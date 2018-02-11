@@ -1,4 +1,5 @@
-var express = require("express"),
+var path = require('path'),
+    express = require("express"),
     mongoose = require("mongoose"),
     passport = require("passport"),
     bodyParser = require("body-parser"),
@@ -12,6 +13,7 @@ mongoose.Promise = global.Promise;
 
 var app = express();
 
+app.set('views', path.join(__dirname, 'app/views'));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 
