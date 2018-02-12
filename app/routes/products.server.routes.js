@@ -1,27 +1,57 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose"); // move to controller
+const multer = require("multer"); // move to controller (middleware)
+
+//multer config ==> move to config/multer.js file
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './public/uploads')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + "-" + file.originalname)
+    }
+});
+// filter non-image files
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+        cb(null, true)
+    } else {
+        cb(null, false)
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
+
+// requiring models/controllers
 const Product = require("../models/product.server.model"); // move to controller
 const products = require("../controllers/products.server.controller");
 
 router.get("/", (req, res, next) => {
     Product.find()
-        .select("name price _id") //select the only fields you want to get
+        .select("name price _id productImage") //select the only fields you want to get
         .exec()
         .then(docs => {
             const response = {
                 count: docs.length,
-              products: docs.map(doc => {
-                  return {
-                      name: doc.name,
-                      price: doc.price,
-                      _id: doc._id,
-                      request: {
-                          type: "GET",
-                          url: "http://localhost:3000/products/" + doc._id
-                      }
-                  }
-              })
+                products: docs.map(doc => {
+                    return {
+                        name: doc.name,
+                        price: doc.price,
+                        productImage: doc.productImage,
+                        _id: doc._id,
+                        request: {
+                            type: "GET",
+                            url: "http://localhost:3000/products/" + doc._id
+                        }
+                    }
+                })
             };
             // console.log(docs);
             //Wrap in if to manage no entries database response. Uncomment to do that
@@ -39,11 +69,13 @@ router.get("/", (req, res, next) => {
         });
 });
 
-router.post("/", (req, res, next) => {
+router.post("/", upload.single("productImage"), (req, res, next) => {
+    console.log(req.file);
     const product = new Product({
         _id: new mongoose.Types.ObjectId, //constructor from Schema
         name: req.body.name,
-        price: req.body.price
+        price: req.body.price,
+        productImage: req.file.path //from multer folder
     });
     product.save()
         .then(result => {
@@ -70,7 +102,7 @@ router.post("/", (req, res, next) => {
 router.get("/:productId", (req, res, next) => {
     const id = req.params.productId;
     Product.findById(id)
-        .select("name price _id") //select the only fields you want to get
+        .select("name price _id productImage") //select the only fields you want to get
         .exec()
         .then(doc => {
             console.log("from db:", doc);
