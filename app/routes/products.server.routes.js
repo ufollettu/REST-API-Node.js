@@ -6,7 +6,7 @@ const multer = require("multer"); // move to controller (middleware)
 //multer config ==> move to config/multer.js file
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './public/uploads')
+        cb(null, './public/images/uploads')
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + "-" + file.originalname)

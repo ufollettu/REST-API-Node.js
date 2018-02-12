@@ -62,12 +62,14 @@ app.use((req, res, next) => {
 // Requiring Routes
 const indexRoutes = require("./routes/index.server.routes");
 const usersRoutes = require("./routes/users.server.routes");
+const userrRoutes = require("./routes/userr.server.routes");
 const productsRoutes = require("./routes/products.server.routes");
 const ordersRoutes = require("./routes/orders.server.routes");
 
 app.use("/", indexRoutes);
 app.use("/", usersRoutes);
 
+app.use("/userr", userrRoutes); //new way
 app.use("/products", productsRoutes);
 app.use("/orders", ordersRoutes);
 
