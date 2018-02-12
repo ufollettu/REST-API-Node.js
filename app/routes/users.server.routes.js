@@ -1,7 +1,7 @@
-var express = require("express");
-var router = express.Router();
-var passport = require("passport");
-var users = require("../controllers/users.server.controller");
+const express = require("express");
+const router = express.Router();
+const passport = require("passport");
+const users = require("../controllers/users.server.controller");
 
 //show signup form
 router.get("/register", users.renderRegister);
@@ -12,7 +12,7 @@ router.get("/login", users.renderLogin);
 router.post("/login", passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login'
-    }), function(req, res) {});
+    }), (req, res) => {});
 
 // logout
 router.get("/logout", users.logout);

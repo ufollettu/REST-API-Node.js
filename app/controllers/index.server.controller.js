@@ -1,6 +1,6 @@
-exports.render = function (req, res) {
+exports.render = (req, res) => {
     res.render("index", {
-        title : "Express",
+        title: "Express",
         user: JSON.stringify(req.user)
     });
 };

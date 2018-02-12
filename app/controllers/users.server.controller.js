@@ -1,20 +1,20 @@
-var User = require("../models/user.server.model");
-var passport = require("passport");
+const User = require("../models/user.server.model");
+const passport = require("passport");
 
 //signup view render
-exports.renderRegister = function (req, res) {
+exports.renderRegister = (req, res) => {
     res.render("register");
 };
 //handling user sign up
-exports.register = function (req, res) {
+exports.register = (req, res) => {
     // res.render("register");
-    User.register(new User({username:req.body.username}), req.body.password, function (err, user) {
-        if(err) {
+    User.register(new User({username: req.body.username}), req.body.password, (err, user) => {
+        if (err) {
             console.log(err);
             // req.flash("error", err.message);
             return res.render("register", {error: err.message}); //different from the lecture when return res.render
         } else {
-            passport.authenticate("local")(req, res, function () {
+            passport.authenticate("local")(req, res, () => {
                 // req.flash("success", "Welcome" + user.username);
                 res.redirect("/");
             })
@@ -22,11 +22,11 @@ exports.register = function (req, res) {
     })
 };
 //signin view render
-exports.renderLogin = function (req, res) {
+exports.renderLogin = (req, res) => {
     res.render("login");
 };
 // signout redirect to index
-exports.logout = function (req, res) {
+exports.logout = (req, res) => {
     req.logout();
     // req.flash("success", "Logged You Out!");
     res.redirect("/");
