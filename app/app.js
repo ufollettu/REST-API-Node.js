@@ -2,7 +2,7 @@ const config = require("../config/config"),
     path = require("path"),
     express = require("express"),
     favicon = require("serve-favicon"),
-    logger = require("morgan"),
+    morgan = require("morgan"),
     compress = require("compression"),
     cookieParser = require("cookie-parser"),
     bodyParser = require("body-parser"),
@@ -13,8 +13,9 @@ const config = require("../config/config"),
 
 const app = express();
 
+//logger
 if (process.env.NODE_ENV === "development") {
-    app.use(logger("dev"));
+    app.use(morgan("dev"));
 } else if (process.env.NODE_ENV === "production") {
     app.use(compress());
 }
@@ -38,7 +39,18 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(function (req, res, next) {
+//Managing CORS errors before requiring routes. Useful for Single Page Application (SPA)
+app.use((req, res, next) =>{
+   res.header('Access-Control-Allow-Origin', '*'); //allow all domain origin request: *
+   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+   if (req.method === 'OPTIONS') {
+       res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+       return res.status(200).json({});
+   }
+   next();
+});
+
+app.use((req, res, next) => {
     // pass if user is authenticated to ALL routes
     res.locals.currentUser = req.user;
     // pass flash message to all routes
@@ -55,6 +67,7 @@ const ordersRoutes = require("./routes/orders.server.routes");
 
 app.use("/", indexRoutes);
 app.use("/", usersRoutes);
+
 app.use("/products", productsRoutes);
 app.use("/orders", ordersRoutes);
 
@@ -72,7 +85,7 @@ app.use((err, req, res, next) => {
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    res.render('error',{ error: err });
 });
 
 module.exports = app;
