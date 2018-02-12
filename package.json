@@ -2,11 +2,11 @@
   "name": "restapi",
   "version": "0.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "bin/www.js",
   "private": true,
   "scripts": {
     "build": "webpack --progress --watch",
-    "start": "node server",
+    "start": "node ",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Pasquino",

@@ -1,6 +1,6 @@
 exports.render = (req, res) => {
     res.render("index", {
-        title: "Express",
+        title: "Node Rest Shop",
         user: JSON.stringify(req.user)
     });
 };
