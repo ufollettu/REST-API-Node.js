@@ -1,4 +1,4 @@
-var config = require("../config/config"),
+const config = require("../config/config"),
     path = require("path"),
     express = require("express"),
     favicon = require("serve-favicon"),
@@ -11,7 +11,7 @@ var config = require("../config/config"),
     passport = require("passport"),
     middleware = require("./middleware/index.server.middleware");
 
-var app = express();
+const app = express();
 
 if (process.env.NODE_ENV === "development") {
     app.use(logger("dev"));
@@ -48,21 +48,27 @@ app.use(function (req, res, next) {
 });
 
 // Requiring Routes
-var indexRoutes = require("./routes/index.server.routes");
-var usersRoutes = require("./routes/users.server.routes");
+const indexRoutes = require("./routes/index.server.routes");
+const usersRoutes = require("./routes/users.server.routes");
 
 app.use("/", indexRoutes);
 app.use("/", usersRoutes);
 
+app.use((req, res, next) => {
+    res.status(200).json({
+        message: "it works!"
+    });
+});
+
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    var err = new Error('Not Found');
+app.use((req, res, next) => {
+    const err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
