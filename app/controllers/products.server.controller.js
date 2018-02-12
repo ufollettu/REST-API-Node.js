@@ -1,1 +1,1 @@
-const Product = require("../models/user.server.model");
+const Product = require("../models/product.server.model");
