@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose"); // move to controller
 const multer = require("multer"); // move to controller (middleware)
+const middleware = require("../middleware"); // move to controller (middleware)
 
 //multer config ==> move to config/multer.js file
 const storage = multer.diskStorage({
@@ -69,7 +70,7 @@ router.get("/", (req, res, next) => {
         });
 });
 
-router.post("/", upload.single("productImage"), (req, res, next) => {
+router.post("/", middleware.checkAuth, upload.single("productImage"), (req, res, next) => {
     console.log(req.file);
     const product = new Product({
         _id: new mongoose.Types.ObjectId, //constructor from Schema
@@ -124,7 +125,7 @@ router.get("/:productId", (req, res, next) => {
         });
 });
 
-router.patch("/:productId", (req, res, next) => {
+router.patch("/:productId", middleware.checkAuth, (req, res, next) => {
     const id = req.params.productId;
     const updateOps = {};
     // use for of loop to retrieve all the product properties (name, price) with a dynamic approach, and store in a obj
@@ -148,7 +149,7 @@ router.patch("/:productId", (req, res, next) => {
         });
 });
 
-router.delete("/:productId", (req, res, next) => {
+router.delete("/:productId", middleware.checkAuth, (req, res, next) => {
     const id = req.params.productId;
     Product.remove({_id: id})
         .exec()

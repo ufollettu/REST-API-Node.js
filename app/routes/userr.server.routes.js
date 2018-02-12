@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const middleware = require("../middleware");
+
+
 const Userr = require("../models/userr.server.model");
 
 router.post("/signup", (req, res, next) => {

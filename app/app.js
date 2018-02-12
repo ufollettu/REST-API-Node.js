@@ -9,7 +9,7 @@ const config = require("../config/config"),
     session = require("express-session"),
     flash = require("connect-flash"),
     passport = require("passport"),
-    middleware = require("./middleware/index.server.middleware");
+    middleware = require("./middleware");
 
 const app = express();
 
