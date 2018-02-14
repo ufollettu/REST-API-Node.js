@@ -1,4 +1,4 @@
-const config = require("./config/config"),
+const config = require("../config/config"),
     path = require("path"),
     express = require("express"),
     favicon = require("serve-favicon"),
@@ -9,7 +9,7 @@ const config = require("./config/config"),
     session = require("express-session"),
     flash = require("connect-flash"),
     passport = require("passport"),
-    middleware = require("./app/middleware/index");
+    middleware = require("./middleware/index");
 
 const app = express();
 
@@ -21,12 +21,12 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // view engine setup
-app.set('views', path.join(__dirname, 'app/views'));
+app.set('views', path.join(__dirname, 'views'));
 app.set("view engine", "ejs");
 
 // uncomment after placing your favicon in /public
-app.use(favicon(path.join(__dirname, './public', 'favicon.ico')));
-app.use(express.static(path.join(__dirname, './public')));
+app.use(favicon(path.join(__dirname, '.././public', 'favicon.ico')));
+app.use(express.static(path.join(__dirname, '.././public')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -61,11 +61,11 @@ app.use((req, res, next) => {
 });
 
 // Requiring Routes
-const indexRoutes = require("./app/routes/index.server.routes");
-const usersRoutes = require("./app/routes/users.server.routes");
-const userrRoutes = require("./app/routes/userr.server.routes");
-const productsRoutes = require("./app/routes/products.server.routes");
-const ordersRoutes = require("./app/routes/orders.server.routes");
+const indexRoutes = require("./routes/index.server.routes");
+const usersRoutes = require("./routes/users.server.routes");
+const userrRoutes = require("./routes/userr.server.routes");
+const productsRoutes = require("./routes/products.server.routes");
+const ordersRoutes = require("./routes/orders.server.routes");
 
 app.use("/", indexRoutes);
 app.use("/", usersRoutes);

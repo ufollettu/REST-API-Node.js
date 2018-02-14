@@ -1,3 +1,9 @@
+coverage/
+dist/
+.idea/
+*.iml
+package-lock.json
+
 # Logs
 logs
 *.log

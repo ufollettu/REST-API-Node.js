@@ -5,7 +5,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 const mongoose = require("../config/mongoose");
 const passport = require("../config/passport");
 
-const app = require('../app');
+const app = require('../app/app');
 const debug = require('debug')('untitled1:server');
 const http = require('http');
 
