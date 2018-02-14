@@ -1,3 +1,4 @@
+const config = require("../../config/config");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -60,7 +61,7 @@ exports.userrSignin = (req, res, next) => {
                             email: userr[0].email,
                             userId: userr[0]._id
                         },
-                        "secretKey",
+                        config.tokenKey,
                         {
                             expiresIn: "1h"
                         });

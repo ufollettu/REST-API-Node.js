@@ -1,3 +1,4 @@
+const config = require("../../config/config");
 const jwt = require("jsonwebtoken");
 const middlewareObj = {};
 
@@ -12,7 +13,7 @@ middlewareObj.isLoggedIn = (req, res, next) => {
 middlewareObj.checkAuth = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(" ")[1];
-        const decoded = jwt.verify(token, "secretKey"); // WARNING: is better to define secretKey in a protect env variable
+        const decoded = jwt.verify(token, config.tokenKey);
         req.userData = decoded;
         next();
     } catch (error) {

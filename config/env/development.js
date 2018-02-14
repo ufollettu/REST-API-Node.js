@@ -2,6 +2,7 @@ module.exports = {
     //Development configuration options
     db: "mongodb://localhost/rest-api-node",
     sessionSecret: "developmentSessionSecret",
+    tokenKey: "secretKey",
     facebook: { //OAuth FB App Data
         clientID: '135099493853031',
         clientSecret: '4f514f22c099edfa4e6fbc0e5262fffa',
