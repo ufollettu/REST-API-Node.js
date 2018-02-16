@@ -1,6 +1,6 @@
 //#!/usr/bin/env node
 // process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-const nodeEnv = process.env.NODE_ENV || 'development';
+// const nodeEnv = process.env.NODE_ENV || 'development';
 
 // Module dependencies.
 const mongoose = require('./config/mongoose');

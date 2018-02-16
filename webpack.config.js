@@ -1,4 +1,4 @@
-require("babel-polyfill");
+require('babel-polyfill');
 const webpack = require('webpack');
 const nodeEnv = process.env.NODE_ENV || 'production';
 const path = require('path');
